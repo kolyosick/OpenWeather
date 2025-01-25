@@ -1,0 +1,15 @@
+# Xcode
+.DS_Store
+UserInterfaceState.xcuserstate
+build/
+*.pbxuser
+!default.pbxuser
+*.xcworkspace
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+DerivedData
+
+# Exclude personal Xcode user settings
+xcuserdata/
