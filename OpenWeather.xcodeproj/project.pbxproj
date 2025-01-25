@@ -25,8 +25,14 @@
 		8C5ED74D2D45230E00B7067D /* Exceptions for "OpenWeather" folder in "OpenWeatherTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Helpers/Constants.swift,
+				Helpers/WeatherURLFactory/WeatherURLFactory.swift,
+				Helpers/WeatherURLFactory/WeatherURLFactoryProtocol.swift,
 				Models/WeatherResponse.swift,
-				Services/Network/NetworkService.swift,
+				Services/Network/NetworkServiceProtocol.swift,
+				Services/Network/URLSessionNetworkService.swift,
+				Services/OpenWeatherService.swift,
+				Services/WeatherService.swift,
 			);
 			target = 8C5ED7132D4520F000B7067D /* OpenWeatherTests */;
 		};

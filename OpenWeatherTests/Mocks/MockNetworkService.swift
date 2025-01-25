@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MockNetworkService: NetworkService {
+class MockNetworkService: NetworkServiceProtocol {
     var result: Result<Data, Error>?
 
     func fetch<T>(_ type: T.Type, from url: URL, completion: @escaping (Result<T, Error>) -> Void) where T: Decodable {

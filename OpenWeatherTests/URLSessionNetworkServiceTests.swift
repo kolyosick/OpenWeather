@@ -6,9 +6,6 @@
 //
 
 import XCTest
-@testable import OpenWeather
-
-import XCTest
 
 final class URLSessionNetworkServiceTests: XCTestCase {
     var networkService: URLSessionNetworkService!
