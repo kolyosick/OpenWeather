@@ -29,6 +29,7 @@
 				Helpers/WeatherHelper.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactory.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactoryProtocol.swift,
+				Models/WeatherErrorState.swift,
 				Models/WeatherResponse.swift,
 				Services/Cache/WeatherCache.swift,
 				Services/Cache/WeatherCacheProtocol.swift,
@@ -37,7 +38,8 @@
 				Services/Network/NetworkServiceProtocol.swift,
 				Services/Network/URLSessionNetworkService.swift,
 				Services/OpenWeatherService.swift,
-				Services/WeatherService.swift,
+				Services/WeatherServiceProtocol.swift,
+				ViewModels/WeatherViewModel.swift,
 			);
 			target = 8C5ED7132D4520F000B7067D /* OpenWeatherTests */;
 		};

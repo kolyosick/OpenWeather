@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class OpenWeatherService {
+final class OpenWeatherService: WeatherServiceProtocol {
     private let networkService: NetworkServiceProtocol
     private let urlFactory: WeatherURLFactoryProtocol
     private let cache: WeatherCacheProtocol
