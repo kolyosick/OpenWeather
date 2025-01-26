@@ -8,6 +8,36 @@
 import XCTest
 
 final class OpenWeatherServiceTests: XCTestCase {
+    private var mockNetworkService: MockNetworkService!
+    private var mockURLFactory: MockURLFactory!
+    private var mockCache: MockWeatherCache!
+    private var mockNetworkMonitor: MockNetworkMonitor!
+    private var weatherService: OpenWeatherService!
+
+    override func setUp() {
+        super.setUp()
+        mockNetworkService = MockNetworkService()
+        mockURLFactory = MockURLFactory()
+        mockCache = MockWeatherCache()
+        mockNetworkMonitor = MockNetworkMonitor()
+        
+        weatherService = OpenWeatherService(
+            networkService: mockNetworkService,
+            urlFactory: mockURLFactory,
+            cache: mockCache,
+            networkMonitor: mockNetworkMonitor
+        )
+    }
+
+    override func tearDown() {
+        mockNetworkService = nil
+        mockURLFactory = nil
+        mockCache = nil
+        mockNetworkMonitor = nil
+        weatherService = nil
+        super.tearDown()
+    }
+
     func testFetchWeatherSuccess() {
         let mockService = MockNetworkService()
         let weatherResponse = WeatherResponse(
@@ -85,6 +115,54 @@ final class OpenWeatherServiceTests: XCTestCase {
                 }
                 expectation.fulfill()
             }
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testFetchWeatherOfflineWithCachedData() {
+        mockNetworkMonitor.isConnected = false // Simulate offline
+        let cachedWeather = WeatherResponse(
+            name: "Cached City",
+            main: WeatherResponse.Main(temp: 20.0),
+            weather: [WeatherResponse.Weather(description: "Cloudy")]
+        )
+        mockCache.cachedWeather = cachedWeather
+
+        let expectation = XCTestExpectation(description: "Completion called with cached data")
+
+        weatherService.fetchWeather(for: "AnyCity") { result in
+            switch result {
+            case .success(let weather):
+                XCTAssertEqual(weather.name, "Cached City")
+                XCTAssertEqual(weather.main.temp, 20.0)
+                XCTAssertEqual(weather.weather.first?.description, "Cloudy")
+                XCTAssertFalse(self.mockNetworkService.fetchCalled, "Should not call network when offline with cached data")
+            case .failure:
+                XCTFail("Expected success, got failure instead")
+            }
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testFetchWeatherOfflineNoCachedDataReturnsError() {
+        mockNetworkMonitor.isConnected = false // Simulate offline
+        mockCache.cachedWeather = nil // No cached data
+        let expectation = XCTestExpectation(description: "Completion called with failure")
+
+        weatherService.fetchWeather(for: "AnyCity") { result in
+            switch result {
+            case .success:
+                XCTFail("Expected failure, got success instead")
+            case .failure(let error as URLError):
+                XCTAssertEqual(error.code, .notConnectedToInternet)
+                XCTAssertFalse(self.mockNetworkService.fetchCalled, "Should not call network when offline")
+            default:
+                XCTFail("Expected URLError(.notConnectedToInternet), got \(type(of: result))")
+            }
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 1.0)

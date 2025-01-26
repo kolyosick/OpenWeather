@@ -31,6 +31,8 @@
 				Models/WeatherResponse.swift,
 				Services/Cache/WeatherCache.swift,
 				Services/Cache/WeatherCacheProtocol.swift,
+				Services/Network/NetworkMonitor.swift,
+				Services/Network/NetworkMonitorProtocol.swift,
 				Services/Network/NetworkServiceProtocol.swift,
 				Services/Network/URLSessionNetworkService.swift,
 				Services/OpenWeatherService.swift,
