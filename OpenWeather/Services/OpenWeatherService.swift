@@ -10,13 +10,13 @@ import Foundation
 final class OpenWeatherService: WeatherServiceProtocol {
     private let networkService: NetworkServiceProtocol
     private let urlFactory: WeatherURLFactoryProtocol
-    private let cache: WeatherCacheProtocol
+    var cache: WeatherCacheProtocol
     private let networkMonitor: NetworkMonitorProtocol
 
-    init(networkService: NetworkServiceProtocol = URLSessionNetworkService(),
-         urlFactory: WeatherURLFactoryProtocol = WeatherURLFactory(apiKey: Constants.apiKey),
-         cache: WeatherCacheProtocol = WeatherCache(),
-         networkMonitor: NetworkMonitorProtocol = NetworkMonitor()) {
+    init(networkService: NetworkServiceProtocol,
+         urlFactory: WeatherURLFactoryProtocol,
+         cache: WeatherCacheProtocol,
+         networkMonitor: NetworkMonitorProtocol) {
         self.networkService = networkService
         self.urlFactory = urlFactory
         self.cache = cache

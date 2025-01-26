@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 
 protocol NetworkMonitorProtocol {
     var isConnected: Bool { get }
+    var connectivityPublisher: AnyPublisher<Bool, Never> { get }
 }

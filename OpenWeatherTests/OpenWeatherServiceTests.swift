@@ -49,7 +49,10 @@ final class OpenWeatherServiceTests: XCTestCase {
         mockService.result = .success(data)
 
         let weatherService = OpenWeatherService(networkService: mockService,
-                                                urlFactory: WeatherURLFactory(apiKey: "fake-key"))
+                                                urlFactory: mockURLFactory,
+                                                cache: mockCache,
+                                                networkMonitor: mockNetworkMonitor)
+
         let expectation = XCTestExpectation(description: "Fetch weather success")
 
         weatherService.fetchWeather(for: "London") { result in
@@ -72,7 +75,10 @@ final class OpenWeatherServiceTests: XCTestCase {
         mockService.result = .failure(URLError(.notConnectedToInternet))
 
         let weatherService = OpenWeatherService(networkService: mockService,
-                                                urlFactory: WeatherURLFactory(apiKey: "fake-key"))
+                                                urlFactory: mockURLFactory,
+                                                cache: mockCache,
+                                                networkMonitor: mockNetworkMonitor)
+
         let expectation = XCTestExpectation(description: "Fetch weather failure")
 
         weatherService.fetchWeather(for: "London") { result in
@@ -99,11 +105,13 @@ final class OpenWeatherServiceTests: XCTestCase {
         }
 
         let factory = MockWeatherURLFactory()
-        let networkService = MockNetworkService()
-        let service = OpenWeatherService(networkService: networkService, urlFactory: factory)
+        let weatherService = OpenWeatherService(networkService: mockNetworkService,
+                                                urlFactory: factory,
+                                                cache: mockCache,
+                                                networkMonitor: mockNetworkMonitor)
         let expectation = XCTestExpectation(description: "Invalid URL failure")
 
-        service.fetchWeather(for: "InvalidCity") { result in
+        weatherService.fetchWeather(for: "InvalidCity") { result in
             switch result {
             case .success:
                 XCTFail("Expected failure, got success")

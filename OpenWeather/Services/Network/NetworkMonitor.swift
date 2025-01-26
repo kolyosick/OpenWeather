@@ -6,12 +6,16 @@
 //
 
 import Network
+import Combine
 
 final class NetworkMonitor: NetworkMonitorProtocol {
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: Constants.networkMonitorKey)
 
-    private(set) var isConnected: Bool = true
+    @Published private(set) var isConnected: Bool = true
+    var connectivityPublisher: AnyPublisher<Bool, Never> {
+        $isConnected.eraseToAnyPublisher()
+    }
 
     init() {
         monitor.pathUpdateHandler = { [weak self] path in

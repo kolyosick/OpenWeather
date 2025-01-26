@@ -8,5 +8,6 @@
 import Foundation
 
 protocol WeatherServiceProtocol {
+    var cache: WeatherCacheProtocol { get }
     func fetchWeather(for city: String, completion: @escaping (Result<WeatherResponse, Error>) -> Void)
 }

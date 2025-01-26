@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 final class WeatherViewModel: ObservableObject {
     @Published var city: String = ""
@@ -13,9 +14,17 @@ final class WeatherViewModel: ObservableObject {
     @Published var viewState: WeatherViewState = .normal
 
     private let weatherService: WeatherServiceProtocol
+    private let networkMonitor: NetworkMonitorProtocol
+    private let cache: WeatherCacheProtocol
+    private var cancellables = Set<AnyCancellable>()
 
-    init(weatherService: WeatherServiceProtocol) {
+    init(weatherService: WeatherServiceProtocol,
+         networkMonitor: NetworkMonitorProtocol,
+         cache: WeatherCacheProtocol) {
         self.weatherService = weatherService
+        self.networkMonitor = networkMonitor
+        self.cache = cache
+        subscribeToNetworkChanges()
     }
     
     func searchWeather() {
@@ -39,6 +48,26 @@ final class WeatherViewModel: ObservableObject {
                     self?.viewState = .serviceError(error.localizedDescription)
                 }
             }
+        }
+    }
+
+    private func subscribeToNetworkChanges() {
+        networkMonitor.connectivityPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isConnected in
+                guard let self = self else { return }
+                if !isConnected {
+                    self.loadCacheIfAvailable()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func loadCacheIfAvailable() {
+        if let cached = cache.load() {
+            self.weather = cached
+        } else {
+            self.weather = nil
         }
     }
 }

@@ -6,20 +6,32 @@
 //
 
 import XCTest
+import Combine
 
 final class WeatherViewModelTests: XCTestCase {
     private var mockService: MockWeatherService!
+    private var mockMonitor: MockNetworkMonitor!
+    private var mockCache: MockWeatherCache!
     private var viewModel: WeatherViewModel!
+    private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         mockService = MockWeatherService()
-        viewModel = WeatherViewModel(weatherService: mockService)
+        mockMonitor = MockNetworkMonitor()
+        mockCache = MockWeatherCache()
+        mockService.mockCache = mockCache
+        viewModel = WeatherViewModel(weatherService: mockService,
+                                     networkMonitor: mockMonitor,
+                                     cache: mockCache)
+        cancellables = []
     }
 
     override func tearDown() {
         mockService = nil
+        mockMonitor = nil
         viewModel = nil
+        cancellables = nil
         super.tearDown()
     }
 
@@ -102,5 +114,54 @@ final class WeatherViewModelTests: XCTestCase {
         }
 
         wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testSubscribeToNetworkChanges_LoadsCacheOnOffline() {
+        let cachedWeather = WeatherResponse(
+            name: "Cached City",
+            main: WeatherResponse.Main(temp: 290.0),
+            weather: [WeatherResponse.Weather(description: "cloudy")]
+        )
+        mockCache.cachedWeather = cachedWeather
+
+        mockMonitor.isConnected = true
+        XCTAssertEqual(viewModel.viewState, .normal, "Initially, the view state should be .normal")
+
+        mockMonitor.sendConnectivity(false)
+
+        let expectation = XCTestExpectation(description: "Offline triggers loadCacheIfAvailable")
+        DispatchQueue.main.async {
+            XCTAssertEqual(self.viewModel.weather?.name, "Cached City")
+            XCTAssertEqual(self.viewModel.viewState, .normal, "Should show cached data in normal state")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testLoadCacheIfAvailable_WithCachedData() {
+
+        let cachedWeather = WeatherResponse(
+            name: "Cached City",
+            main: WeatherResponse.Main(temp: 290.0),
+            weather: [WeatherResponse.Weather(description: "cloudy")]
+        )
+        mockCache.cachedWeather = cachedWeather
+
+        mockMonitor.sendConnectivity(false)
+        let expectation = XCTestExpectation(description: "Offline triggers loadCacheIfAvailable")
+        DispatchQueue.main.async {
+            XCTAssertEqual(self.viewModel.weather?.name, "Cached City")
+            XCTAssertEqual(self.viewModel.viewState, .normal)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testLoadCacheIfAvailable_WithoutCachedData() {
+        mockCache.cachedWeather = nil
+
+        mockMonitor.sendConnectivity(false)
+
+        XCTAssertNil(viewModel.weather, "No weather available in the cache")
     }
 }
