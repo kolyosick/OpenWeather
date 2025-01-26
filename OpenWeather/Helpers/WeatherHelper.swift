@@ -1,5 +1,5 @@
 //
-//  SFWeatherMapper.swift
+//  WeatherHelper.swift
 //  OpenWeather
 //
 //  Created by Nikolai Alekseev on 26.01.25.
@@ -7,18 +7,15 @@
 
 import Foundation
 
-struct SFWeatherMapper {
+struct WeatherHelper {
+    /// Converts a temperature from Kelvin to an integer Celsius value.
+    static func kelvinToCelsius(_ kelvin: Double) -> Int {
+        let celsius = kelvin - 273.15
+        return Int(celsius)
+    }
+
     /// Maps a weather condition string to a unique SF Symbol.
-    /// This covers all 9 currently available OpenWeather conditions (ignoring day/night):
-    /// 1) clear sky
-    /// 2) few clouds
-    /// 3) scattered clouds
-    /// 4) broken clouds
-    /// 5) shower rain
-    /// 6) rain
-    /// 7) thunderstorm
-    /// 8) snow
-    /// 9) mist
+    /// This covers all 9 currently available OpenWeather conditions (ignoring day/night)
     static func mapConditionToSFSymbol(_ condition: String) -> String {
         let lowerCondition = condition.lowercased()
         
