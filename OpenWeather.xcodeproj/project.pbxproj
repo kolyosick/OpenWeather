@@ -26,6 +26,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Helpers/Constants.swift,
+				Helpers/SFWeatherMapper.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactory.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactoryProtocol.swift,
 				Models/WeatherResponse.swift,
