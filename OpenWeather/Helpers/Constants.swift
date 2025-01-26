@@ -13,3 +13,12 @@ struct Constants {
     static let cacheKey = "lastWeatherData"
     static let networkMonitorKey = "networkMonitor"
 }
+
+//TODO: Localisation
+struct Message {
+    static let noWeatherData = "No Weather Data"
+    static let fetchingWeather = "Fetching weather…"
+    static let enterCityName = "Please enter a city name."
+    static let weather = "Weather"
+    static let searchCity = "Search for a city"
+}

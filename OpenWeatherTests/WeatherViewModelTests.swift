@@ -28,7 +28,7 @@ final class WeatherViewModelTests: XCTestCase {
         viewModel.searchWeather()
         
         XCTAssertFalse(mockService.fetchWeatherCalled)
-        XCTAssertEqual(viewModel.errorState, .emptyCity)
+        XCTAssertEqual(viewModel.viewState, .emptyCity)
         XCTAssertNil(viewModel.weather)
     }
 
@@ -48,7 +48,7 @@ final class WeatherViewModelTests: XCTestCase {
         XCTAssertTrue(mockService.fetchWeatherCalled, "fetchWeather should be called for non-empty city.")
 
         DispatchQueue.main.async {
-            XCTAssertEqual(self.viewModel.errorState, .none, "Expected .none error state on success.")
+            XCTAssertEqual(self.viewModel.viewState, .normal, "Expected .none error state on success.")
             XCTAssertEqual(self.viewModel.weather?.name, "London", "Expected weather for London on success.")
             expectation.fulfill()
         }
@@ -68,8 +68,8 @@ final class WeatherViewModelTests: XCTestCase {
         XCTAssertTrue(mockService.fetchWeatherCalled, "fetchWeather should be called for non-empty city.")
 
         DispatchQueue.main.async {
-            let expectedState = WeatherErrorState.serviceError(mockError.localizedDescription)
-            XCTAssertEqual(self.viewModel.errorState, expectedState)
+            let expectedState = WeatherViewState.serviceError(mockError.localizedDescription)
+            XCTAssertEqual(self.viewModel.viewState, expectedState)
             XCTAssertNil(self.viewModel.weather, "Weather should be nil on failure.")
             expectation.fulfill()
         }
@@ -87,10 +87,10 @@ final class WeatherViewModelTests: XCTestCase {
         viewModel.searchWeather()
 
         DispatchQueue.main.async {
-            let expectedState = WeatherErrorState.serviceError(mockError.localizedDescription)
-            XCTAssertEqual(self.viewModel.errorState, expectedState)
+            let expectedState = WeatherViewState.serviceError(mockError.localizedDescription)
+            XCTAssertEqual(self.viewModel.viewState, expectedState)
 
-            if case let .serviceError(message) = self.viewModel.errorState {
+            if case let .serviceError(message) = self.viewModel.viewState {
                 XCTAssertEqual(message, "City is not found")
                 let localizedErrMsg = mockError.localizedDescription
                 XCTAssertEqual(localizedErrMsg, "City is not found")

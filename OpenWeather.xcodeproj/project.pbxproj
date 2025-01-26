@@ -30,8 +30,8 @@
 				Helpers/WeatherURLFactory/WeatherURLFactory.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactoryProtocol.swift,
 				Models/NetworkError.swift,
-				Models/WeatherErrorState.swift,
 				Models/WeatherResponse.swift,
+				Models/WeatherViewState.swift,
 				Services/Cache/WeatherCache.swift,
 				Services/Cache/WeatherCacheProtocol.swift,
 				Services/Network/NetworkMonitor.swift,
@@ -354,7 +354,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"OpenWeather/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"OpenWeather/Resources\"";
 				DEVELOPMENT_TEAM = ALYA333U72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -383,7 +383,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"OpenWeather/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"OpenWeather/Resources\"";
 				DEVELOPMENT_TEAM = ALYA333U72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

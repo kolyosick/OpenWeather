@@ -10,7 +10,7 @@ import SwiftUI
 final class WeatherViewModel: ObservableObject {
     @Published var city: String = ""
     @Published var weather: WeatherResponse?
-    @Published var errorState: WeatherErrorState = .none
+    @Published var viewState: WeatherViewState = .normal
 
     private let weatherService: WeatherServiceProtocol
 
@@ -19,21 +19,24 @@ final class WeatherViewModel: ObservableObject {
     }
     
     func searchWeather() {
-        errorState = .none
+        viewState = .normal
 
         guard !city.isEmpty else {
-            errorState = .emptyCity
+            viewState = .emptyCity
             return
         }
+
+        viewState = .loading
 
         weatherService.fetchWeather(for: city) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     self?.weather = response
+                    self?.viewState = .normal
                 case .failure(let error):
                     self?.weather = nil
-                    self?.errorState = .serviceError(error.localizedDescription)
+                    self?.viewState = .serviceError(error.localizedDescription)
                 }
             }
         }
