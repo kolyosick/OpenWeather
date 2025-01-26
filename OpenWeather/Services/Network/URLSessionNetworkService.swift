@@ -21,7 +21,18 @@ final class URLSessionNetworkService: NetworkServiceProtocol {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(URLError(.badServerResponse)))
+                return
+            }
+
+            switch httpResponse.statusCode {
+            case 200...299:
+                break // OK – proceed to decode
+            case 404:
+                completion(.failure(NetworkError.notFound))
+                return
+            default:
                 completion(.failure(URLError(.badServerResponse)))
                 return
             }

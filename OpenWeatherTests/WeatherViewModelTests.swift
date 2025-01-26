@@ -76,4 +76,31 @@ final class WeatherViewModelTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1.0)
     }
+
+    func testFetchWeatherCityNotFound() {
+        viewModel.city = "InvalidCity"
+        let mockError = NetworkError.notFound
+        mockService.mockResult = .failure(mockError)
+
+        let expectation = XCTestExpectation(description: "Fetch Weather shows city is not found")
+
+        viewModel.searchWeather()
+
+        DispatchQueue.main.async {
+            let expectedState = WeatherErrorState.serviceError(mockError.localizedDescription)
+            XCTAssertEqual(self.viewModel.errorState, expectedState)
+
+            if case let .serviceError(message) = self.viewModel.errorState {
+                XCTAssertEqual(message, "City is not found")
+                let localizedErrMsg = mockError.localizedDescription
+                XCTAssertEqual(localizedErrMsg, "City is not found")
+            } else {
+                XCTFail("Expected .serviceError with \"City is not found\" message")
+            }
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+    }
 }

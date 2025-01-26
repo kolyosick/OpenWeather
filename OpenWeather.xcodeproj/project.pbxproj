@@ -29,6 +29,7 @@
 				Helpers/WeatherHelper.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactory.swift,
 				Helpers/WeatherURLFactory/WeatherURLFactoryProtocol.swift,
+				Models/NetworkError.swift,
 				Models/WeatherErrorState.swift,
 				Models/WeatherResponse.swift,
 				Services/Cache/WeatherCache.swift,

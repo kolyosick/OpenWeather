@@ -174,4 +174,66 @@ final class URLSessionNetworkServiceTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
+    func testFetchNotFoundResponse() {
+
+        let mockURLResponse = HTTPURLResponse(
+            url: URL(string: "https://mockurl.com")!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil
+        )
+
+        let mockData = Data()
+
+        MockURLProtocol.mockResponse = (data: mockData, response: mockURLResponse, error: nil)
+
+        let expectation = XCTestExpectation(description: "Not found response should return NetworkError.notFound")
+
+        networkService.fetch(WeatherResponse.self, from: URL(string: "https://mockurl.com")!) { result in
+            switch result {
+            case .success:
+                XCTFail("Expected failure for 404, got success")
+            case .failure(let error):
+                if let networkError = error as? NetworkError {
+                    XCTAssertEqual(networkError, .notFound, "Expected NetworkError.notFound for 404 status code")
+                } else {
+                    XCTFail("Expected NetworkError.notFound, got \(type(of: error)): \(error)")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testFetchNonHTTPURLResponse() {
+        let mockResponse = URLResponse(
+            url: URL(string: "https://mockurl.com")!,
+            mimeType: nil,
+            expectedContentLength: 0,
+            textEncodingName: nil
+        )
+
+        MockURLProtocol.mockResponse = (data: nil, response: mockResponse, error: nil)
+
+        let expectation = XCTestExpectation(description: "Non-HTTPURLResponse should yield URLError(.badServerResponse)")
+
+        networkService.fetch(WeatherResponse.self, from: URL(string: "https://mockurl.com")!) { result in
+            // Assert
+            switch result {
+            case .success:
+                XCTFail("Expected failure for non-HTTPURLResponse, got success")
+            case .failure(let error):
+                if let urlError = error as? URLError {
+                    XCTAssertEqual(urlError.code, .badServerResponse, "Expected badServerResponse for non-HTTPURLResponse")
+                } else {
+                    XCTFail("Expected URLError(.badServerResponse), got \(type(of: error)): \(error)")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
 }
