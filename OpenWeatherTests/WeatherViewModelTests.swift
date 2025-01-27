@@ -164,4 +164,33 @@ final class WeatherViewModelTests: XCTestCase {
 
         XCTAssertNil(viewModel.weather, "No weather available in the cache")
     }
+
+    func testIsConnectedUpdatesWhenNetworkChanges() {
+        let mockMonitor = MockNetworkMonitor()
+        let viewModel = WeatherViewModel(
+            weatherService: MockWeatherService(),
+            networkMonitor: mockMonitor,
+            cache: mockCache
+        )
+
+        XCTAssertTrue(viewModel.isConnected, "Should start with connected state")
+
+        let offlineExpectation = expectation(description: "Should update to offline")
+        mockMonitor.sendConnectivity(false)
+
+        DispatchQueue.main.async {
+            XCTAssertFalse(viewModel.isConnected, "Should reflect offline state")
+            offlineExpectation.fulfill()
+        }
+
+        let onlineExpectation = expectation(description: "Should update to online")
+        mockMonitor.sendConnectivity(true)
+
+        DispatchQueue.main.async {
+            XCTAssertTrue(viewModel.isConnected, "Should reflect online state")
+            onlineExpectation.fulfill()
+        }
+
+        wait(for: [offlineExpectation, onlineExpectation], timeout: 1.0)
+    }
 }
