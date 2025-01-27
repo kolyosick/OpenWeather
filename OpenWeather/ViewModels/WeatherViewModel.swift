@@ -18,6 +18,7 @@ final class WeatherViewModel: ObservableObject {
     private let networkMonitor: NetworkMonitorProtocol
     private let cache: WeatherCacheProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var loadingWorkItem: DispatchWorkItem? = nil
 
     init(weatherService: WeatherServiceProtocol,
          networkMonitor: NetworkMonitorProtocol,
@@ -30,16 +31,23 @@ final class WeatherViewModel: ObservableObject {
     
     func searchWeather() {
         viewState = .normal
+        loadingWorkItem?.cancel()
 
         guard !city.isEmpty else {
             viewState = .emptyCity
             return
         }
 
-        viewState = .loading
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.viewState = .loading
+        }
+        loadingWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
 
         weatherService.fetchWeather(for: city) { [weak self] result in
             DispatchQueue.main.async {
+                self?.loadingWorkItem?.cancel()
+
                 switch result {
                 case .success(let response):
                     self?.weather = response
