@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8C60F22F2D47E51700EE52DE /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 8C60F22E2D47E51700EE52DE /* ViewInspector */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8C5ED7152D4520F000B7067D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -41,6 +45,9 @@
 				Services/OpenWeatherService.swift,
 				Services/WeatherServiceProtocol.swift,
 				ViewModels/WeatherViewModel.swift,
+				Views/OfflineNotice.swift,
+				Views/WeatherDetailView.swift,
+				Views/WeatherView.swift,
 			);
 			target = 8C5ED7132D4520F000B7067D /* OpenWeatherTests */;
 		};
@@ -74,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C60F22F2D47E51700EE52DE /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +149,7 @@
 			);
 			name = OpenWeatherTests;
 			packageProductDependencies = (
+				8C60F22E2D47E51700EE52DE /* ViewInspector */,
 			);
 			productName = OpenWeatherTests;
 			productReference = 8C5ED7142D4520F000B7067D /* OpenWeatherTests.xctest */;
@@ -174,6 +183,9 @@
 			);
 			mainGroup = 8C5ED6FB2D4520EF00B7067D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8C60F22D2D47E51700EE52DE /* XCRemoteSwiftPackageReference "ViewInspector" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8C5ED7052D4520EF00B7067D /* Products */;
 			projectDirPath = "";
@@ -474,6 +486,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8C60F22D2D47E51700EE52DE /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8C60F22E2D47E51700EE52DE /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C60F22D2D47E51700EE52DE /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8C5ED6FC2D4520EF00B7067D /* Project object */;
 }
