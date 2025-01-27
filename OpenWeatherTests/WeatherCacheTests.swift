@@ -31,7 +31,7 @@ final class WeatherCacheTests: XCTestCase {
         let weather = WeatherResponse(
             name: "Test City",
             main: WeatherResponse.Main(temp: 25.0),
-            weather: [WeatherResponse.Weather(description: "Sunny")]
+            weather: [WeatherResponse.Weather(description: "Sunny", icon: "01d")]
         )
 
         cache.save(weather: weather)

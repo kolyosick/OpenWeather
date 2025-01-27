@@ -21,53 +21,54 @@ final class WeatherHelperTests: XCTestCase {
         XCTAssertEqual(celsius, -23, "250 K should convert to roughly -23 °C")
     }
 
-    func testClearSkyMapsToSunMaxFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("clear sky")
-        XCTAssertEqual(icon, "sun.max.fill")
+    func testIconToSFSymbolMapping() {
+        let testCases: [(input: String, expected: String)] = [
+            // Clear Sky
+            ("01d", "sun.max.fill"),
+            ("01n", "moon.stars.fill"),
+
+            // Few Clouds
+            ("02d", "cloud.sun.fill"),
+            ("02n", "cloud.moon.fill"),
+
+            // Scattered Clouds
+            ("03d", "cloud.fill"),
+            ("03n", "cloud.fill"),
+
+            // Broken Clouds
+            ("04d", "smoke.fill"),
+            ("04n", "smoke.fill"),
+
+            // Shower Rain
+            ("09d", "cloud.drizzle.fill"),
+            ("09n", "cloud.drizzle.fill"),
+
+            // Rain
+            ("10d", "cloud.rain.fill"),
+            ("10n", "cloud.moon.rain.fill"),
+
+            // Thunderstorm
+            ("11d", "cloud.bolt.rain.fill"),
+            ("11n", "cloud.bolt.rain.fill"),
+
+            // Snow
+            ("13d", "cloud.snow.fill"),
+            ("13n", "cloud.snow.fill"),
+
+            // Mist
+            ("50d", "cloud.fog.fill"),
+            ("50n", "cloud.fog.fill")
+        ]
+        
+        for (icon, expected) in testCases {
+            let result = WeatherHelper.mapIconToSFSymbol(icon)
+            XCTAssertEqual(result, expected,
+                           "Failed for icon: \(icon). Expected: \(expected), Got: \(result)")
+        }
     }
-    
-    func testFewCloudsMapsToCloudSunFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("few clouds")
-        XCTAssertEqual(icon, "cloud.sun.fill")
-    }
-    
-    func testScatteredCloudsMapsToCloudFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("scattered clouds")
-        XCTAssertEqual(icon, "cloud.fill")
-    }
-    
-    func testBrokenCloudsMapsToSmokeFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("broken clouds")
-        XCTAssertEqual(icon, "smoke.fill")
-    }
-    
-    func testShowerRainMapsToCloudDrizzleFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("shower rain")
-        XCTAssertEqual(icon, "cloud.drizzle.fill")
-    }
-    
-    func testRainMapsToCloudRainFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("rain")
-        XCTAssertEqual(icon, "cloud.rain.fill")
-    }
-    
-    func testThunderstormMapsToCloudBoltRainFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("thunderstorm")
-        XCTAssertEqual(icon, "cloud.bolt.rain.fill")
-    }
-    
-    func testSnowMapsToCloudSnowFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("snow")
-        XCTAssertEqual(icon, "cloud.snow.fill")
-    }
-    
-    func testMistMapsToCloudFogFill() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("mist")
-        XCTAssertEqual(icon, "cloud.fog.fill")
-    }
-    
+
     func testFallbackConditionMapsToCloud() {
-        let icon = WeatherHelper.mapConditionToSFSymbol("some unknown weather")
+        let icon = WeatherHelper.mapIconToSFSymbol("some unknown icon")
         XCTAssertEqual(icon, "cloud", "Unrecognized conditions should map to 'cloud'")
     }
 }

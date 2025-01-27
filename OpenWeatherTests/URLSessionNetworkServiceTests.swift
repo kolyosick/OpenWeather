@@ -31,7 +31,7 @@ final class URLSessionNetworkServiceTests: XCTestCase {
         let expectedResponse = WeatherResponse(
             name: "Test City",
             main: WeatherResponse.Main(temp: 300.0),
-            weather: [WeatherResponse.Weather(description: "sunny")]
+            weather: [WeatherResponse.Weather(description: "sunny", icon: "01d")]
         )
         let mockData = try! JSONEncoder().encode(expectedResponse)
         let mockURLResponse = HTTPURLResponse(

@@ -15,7 +15,7 @@ class WeatherDetailViewTests: XCTestCase {
         let weather = WeatherResponse(
             name: "Paris",
             main: .init(temp: 300.0),
-            weather: [.init(description: "sunny")]
+            weather: [.init(description: "sunny", icon: "01d")]
         )
         let view = WeatherDetailView(weather: weather)
         let vStack = try view.inspect().find(ViewType.VStack.self)

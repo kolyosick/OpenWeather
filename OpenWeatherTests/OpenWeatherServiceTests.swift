@@ -43,7 +43,7 @@ final class OpenWeatherServiceTests: XCTestCase {
         let weatherResponse = WeatherResponse(
             name: "London",
             main: WeatherResponse.Main(temp: 288.55),
-            weather: [WeatherResponse.Weather(description: "clear sky")]
+            weather: [WeatherResponse.Weather(description: "clear sky", icon: "01d")]
         )
         let data = try! JSONEncoder().encode(weatherResponse)
         mockService.result = .success(data)
@@ -133,7 +133,7 @@ final class OpenWeatherServiceTests: XCTestCase {
         let cachedWeather = WeatherResponse(
             name: "Cached City",
             main: WeatherResponse.Main(temp: 20.0),
-            weather: [WeatherResponse.Weather(description: "Cloudy")]
+            weather: [WeatherResponse.Weather(description: "Cloudy", icon: "01d")]
         )
         mockCache.cachedWeather = cachedWeather
 

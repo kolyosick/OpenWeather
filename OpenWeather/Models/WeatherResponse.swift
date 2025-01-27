@@ -18,6 +18,6 @@ struct WeatherResponse: Codable {
 
     struct Weather: Codable {
         let description: String
-        //TODO: add missing fields
+        let icon: String
     }
 }

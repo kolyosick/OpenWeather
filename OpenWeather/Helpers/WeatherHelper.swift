@@ -14,29 +14,35 @@ struct WeatherHelper {
         return Int(celsius)
     }
 
-    /// Maps a weather condition string to a unique SF Symbol.
-    /// This covers all 9 currently available OpenWeather conditions (ignoring day/night)
-    static func mapConditionToSFSymbol(_ condition: String) -> String {
-        let lowerCondition = condition.lowercased()
-        
-        switch lowerCondition {
-        case let s where s.contains("clear sky"):
+    /// Maps a weather icon name to a unique SF Symbol.
+    /// This covers all 9 currently available OpenWeather conditions (considering day/night).
+    /// reference: https://openweathermap.org/weather-conditions
+    ///
+    static func mapIconToSFSymbol(_ icon: String) -> String {
+        switch icon {
+        case "01d":
             return "sun.max.fill"
-        case let s where s.contains("few clouds"):
+        case "01n":
+            return "moon.stars.fill"
+        case "02d":
             return "cloud.sun.fill"
-        case let s where s.contains("scattered clouds"):
+        case "02n":
+            return "cloud.moon.fill"
+        case "03d", "03n":
             return "cloud.fill"
-        case let s where s.contains("broken clouds"):
+        case "04d", "04n":
             return "smoke.fill"
-        case let s where s.contains("shower rain"):
+        case "09d", "09n":
             return "cloud.drizzle.fill"
-        case let s where s.contains("rain"):
+        case "10d":
             return "cloud.rain.fill"
-        case let s where s.contains("thunderstorm"):
+        case "10n":
+            return "cloud.moon.rain.fill"
+        case "11d", "11n":
             return "cloud.bolt.rain.fill"
-        case let s where s.contains("snow"):
+        case "13d", "13n":
             return "cloud.snow.fill"
-        case let s where s.contains("mist"):
+        case "50d", "50n":
             return "cloud.fog.fill"
         default:
             return "cloud"

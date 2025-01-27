@@ -12,8 +12,8 @@ struct WeatherDetailView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            let condition = weather.weather.first?.description ?? ""
-            let iconName = WeatherHelper.mapConditionToSFSymbol(condition)
+            let icon = weather.weather.first?.icon ?? ""
+            let iconName = WeatherHelper.mapIconToSFSymbol(icon)
 
             Image(systemName: iconName)
                 .resizable()
@@ -29,6 +29,7 @@ struct WeatherDetailView: View {
             Text("\(celsius)°C")
                 .font(.system(size: 40, weight: .bold))
 
+            let condition = weather.weather.first?.description ?? ""
             Text(condition.capitalized)
                 .font(.headline)
         }

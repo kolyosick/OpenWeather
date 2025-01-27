@@ -49,7 +49,7 @@ final class WeatherViewModelTests: XCTestCase {
         let mockWeather = WeatherResponse(
             name: "London",
             main: WeatherResponse.Main(temp: 300.0),
-            weather: [WeatherResponse.Weather(description: "clear sky")]
+            weather: [WeatherResponse.Weather(description: "clear sky", icon: "01d")]
         )
         mockService.mockResult = .success(mockWeather)
 
@@ -120,7 +120,7 @@ final class WeatherViewModelTests: XCTestCase {
         let cachedWeather = WeatherResponse(
             name: "Cached City",
             main: WeatherResponse.Main(temp: 290.0),
-            weather: [WeatherResponse.Weather(description: "cloudy")]
+            weather: [WeatherResponse.Weather(description: "cloudy", icon: "01d")]
         )
         mockCache.cachedWeather = cachedWeather
 
@@ -143,7 +143,7 @@ final class WeatherViewModelTests: XCTestCase {
         let cachedWeather = WeatherResponse(
             name: "Cached City",
             main: WeatherResponse.Main(temp: 290.0),
-            weather: [WeatherResponse.Weather(description: "cloudy")]
+            weather: [WeatherResponse.Weather(description: "cloudy", icon: "01d")]
         )
         mockCache.cachedWeather = cachedWeather
 

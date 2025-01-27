@@ -83,7 +83,7 @@ class WeatherViewTests: XCTestCase {
         viewModel.weather = WeatherResponse(
             name: "London",
             main: .init(temp: 290.0),
-            weather: [.init(description: "cloudy")]
+            weather: [.init(description: "cloudy", icon: "01d")]
         )
 
         let view = WeatherView(viewModel: viewModel)
