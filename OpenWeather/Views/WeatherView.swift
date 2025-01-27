@@ -17,6 +17,9 @@ struct WeatherView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                if !viewModel.isConnected {
+                    OfflineNotice()
+                }
                 switch viewModel.viewState {
                 case .normal:
                     if let weather = viewModel.weather {

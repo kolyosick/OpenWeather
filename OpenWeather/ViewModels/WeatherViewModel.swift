@@ -12,6 +12,7 @@ final class WeatherViewModel: ObservableObject {
     @Published var city: String = ""
     @Published var weather: WeatherResponse?
     @Published var viewState: WeatherViewState = .normal
+    @Published var isConnected: Bool = true
 
     private let weatherService: WeatherServiceProtocol
     private let networkMonitor: NetworkMonitorProtocol
@@ -56,6 +57,7 @@ final class WeatherViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isConnected in
                 guard let self = self else { return }
+                self.isConnected = isConnected
                 if !isConnected {
                     self.loadCacheIfAvailable()
                 }

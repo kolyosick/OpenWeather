@@ -21,4 +21,5 @@ struct Message {
     static let enterCityName = "Please enter a city name."
     static let weather = "Weather"
     static let searchCity = "Search for a city"
+    static let offlineNotice = "Offline Mode - Showing Cached Data"
 }
