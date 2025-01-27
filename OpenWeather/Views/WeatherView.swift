@@ -48,5 +48,6 @@ struct WeatherView: View {
                 viewModel.searchWeather()
             }
         }
+        .navigationViewStyle(.stack)
     }
 }

@@ -19,7 +19,7 @@ struct WeatherDetailView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 80, height: 80)
-                .symbolRenderingMode(.multicolor)
+                .symbolRenderingMode(.hierarchical)
 
             Text(weather.name)
                 .font(.title)
